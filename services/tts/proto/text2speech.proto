@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package text2speech;
+
+service Text2SpeechService {
+    rpc Text2Speech (Text2SpeechRequest) returns (Text2SpeechResponse);
+}
+
+message Text2SpeechRequest {
+    string text = 1;
+}
+
+message Text2SpeechResponse {
+    bytes audio = 1;
+}
