@@ -1,0 +1,14 @@
+services:
+  tts-grpc:
+    build:
+      context: ./services/tts
+      dockerfile: Dockerfile
+    ports:
+      - 50052:50052
+
+  stt-grpc:
+    build:
+      context: ./services/stt
+      dockerfile: Dockerfile
+    ports:
+      - 50051:50051
