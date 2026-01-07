@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package transcriber;
+
+service TranscriptionService {
+  rpc Transcribe (TranscriptionRequest) returns (TranscriptionResponse);
+}
+
+message TranscriptionRequest {
+  bytes audio = 1;          // raw audio bytes (wav/mp3)
+  string language = 2;      // optional: "en", "es", auto if empty
+}
+
+message TranscriptionResponse {
+  string text = 1;
+}
