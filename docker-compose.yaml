@@ -17,3 +17,6 @@ services:
       - .env
     ports:
       - "${BACKEND_PORT:-8000}:8000"
+    depends_on:
+      - tts-grpc
+      - stt-grpc
