@@ -3,15 +3,11 @@ services:
     build:
       context: ./services/tts
       dockerfile: Dockerfile
-    ports:
-      - 50052:50052
 
   stt-grpc:
     build:
       context: ./services/stt
       dockerfile: Dockerfile
-    ports:
-      - 50051:50051
 
   backend:
     build:
@@ -20,4 +16,4 @@ services:
     env_file:
       - .env
     ports:
-      - 8000:8000
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
