@@ -26,6 +26,4 @@ COPY --from=build /app/tts app/tts
 
 WORKDIR /app
 
-EXPOSE 50052
-
 CMD ["python", "-m", "tts.server"]

@@ -28,6 +28,4 @@ COPY --from=build /app/stt app/stt
 
 WORKDIR /app
 
-EXPOSE 50051
-
 CMD ["python", "-m", "stt.server"]
