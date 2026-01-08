@@ -6,8 +6,11 @@ RUN apt-get update && apt-get install -y \
         build-essential \
         libsndfile1 \
         ffmpeg \
-        netcat-openbsd \
+        curl git wget golang \
     && rm -rf /var/lib/apt/lists/*
+
+RUN go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+RUN cp $(go env GOPATH)/bin/grpcurl /usr/local/bin/grpcurl
 
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
@@ -20,6 +23,8 @@ RUN pip install --no-cache-dir grpcio grpcio-tools transformers accelerate
 FROM python:3.12-slim
 
 COPY --from=build /opt/venv /opt/venv
+COPY --from=build /usr/local/bin/grpcurl /usr/local/bin/grpcurl
+
 ENV PATH="/opt/venv/bin:$PATH"
 
 RUN apt-get update && apt-get install -y ffmpeg \
@@ -29,4 +34,4 @@ COPY --from=build /app/stt app/stt
 
 WORKDIR /app
 
-CMD ["python", "-m", "stt.server"]
+CMD ["python", "-u", "-m", "stt.server"]

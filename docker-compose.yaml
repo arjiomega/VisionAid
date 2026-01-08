@@ -3,23 +3,11 @@ services:
     build:
       context: ./services/tts
       dockerfile: Dockerfile
-    healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "50051"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-      start_period: 120s
 
   stt-grpc:
     build:
       context: ./services/stt
       dockerfile: Dockerfile
-    healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "50051"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-      start_period: 120s
 
   backend:
     build:
@@ -30,7 +18,5 @@ services:
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     depends_on:
-      tts-grpc:
-        condition: service_healthy
-      stt-grpc:
-        condition: service_healthy
+      - tts-grpc
+      - stt-grpc

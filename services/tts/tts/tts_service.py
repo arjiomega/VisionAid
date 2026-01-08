@@ -23,5 +23,3 @@ class PiperTTS:
 
             self.voice.synthesize_wav(text, wav_writer)
         return buf.getvalue()
-
-tts_model = PiperTTS()
