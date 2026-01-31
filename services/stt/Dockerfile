@@ -17,8 +17,8 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 COPY stt/ ./stt
 
-RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
-RUN pip install --no-cache-dir grpcio grpcio-tools transformers accelerate
+RUN pip install --no-cache-dir torch==2.9.1+cpu --index-url https://download.pytorch.org/whl/cpu
+RUN pip install --no-cache-dir grpcio==1.76.0 grpcio-tools==1.76.0 transformers==4.57.3 accelerate==1.12.0
 
 FROM python:3.12-slim
 
