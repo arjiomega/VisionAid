@@ -14,3 +14,6 @@ dependencies = [
 torch = [
     "torch>=2.9.1"
 ]
+
+[tool.setuptools]
+packages = ["tts"]
