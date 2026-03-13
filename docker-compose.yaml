@@ -1,4 +1,19 @@
 services:
+
+  db:
+    image: postgres:16
+    container_name: visualaid_db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: visualaid_db
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d
+
   tts-grpc:
     build:
       context: ./services/tts
@@ -20,3 +35,6 @@ services:
     depends_on:
       - tts-grpc
       - stt-grpc
+
+volumes:
+  local_pgdata:
