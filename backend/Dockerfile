@@ -10,11 +10,9 @@ RUN apt-get update && apt-get install -y \
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-COPY pyproject.toml main.py logger.py ./
-COPY clients/ ./clients
+COPY pyproject.toml ./
+COPY app/ ./app
 COPY generated/ ./generated
-COPY routes/ ./routes
-COPY services/ ./services
 
 RUN pip install --no-cache-dir .
 
@@ -24,14 +22,8 @@ FROM python:3.12-slim
 COPY --from=build /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-COPY --from=build /app/main.py /app/main.py
-COPY --from=build /app/logger.py /app/logger.py
-COPY --from=build /app/clients app/clients
-COPY --from=build /app/generated app/generated
-COPY --from=build /app/routes app/routes
-COPY --from=build /app/services app/services
-
+COPY --from=build /app /app
 
 WORKDIR /app
 
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port 8000"]
