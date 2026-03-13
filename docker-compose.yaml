@@ -5,11 +5,11 @@ services:
     container_name: visualaid_db
     restart: always
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: visualaid_db
+      POSTGRES_USER: ${POSTGRES_USER:?Environment variable POSTGRES_USER is required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Environment variable POSTGRES_PASSWORD is required}
+      POSTGRES_DB: ${POSTGRES_DB:?Environment variable POSTGRES_DB is required}
     volumes:
       - local_pgdata:/var/lib/postgresql/data
       - ./db:/docker-entrypoint-initdb.d
@@ -30,11 +30,37 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?Environment variable OPENAI_API_KEY is required}
+      TTS_GRPC_HOST: ${TTS_GRPC_HOST:-tts-grpc}
+      TTS_GRPC_PORT: ${TTS_GRPC_PORT:-50051}
+      STT_GRPC_HOST: ${STT_GRPC_HOST:-stt-grpc}
+      STT_GRPC_PORT: ${STT_GRPC_PORT:-50051}
+      DATABASE_URL: "${DATABASE_URL:-postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}}"
+      SECRET_KEY: ${SECRET_KEY:?Environment variable SECRET_KEY is required}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     depends_on:
       - tts-grpc
       - stt-grpc
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_BACKEND_BASE_URL: ${BACKEND_BASE_URL:-http://localhost:8000}
+        NEXT_PUBLIC_BACKEND_BASE_WS_URL: ${BACKEND_BASE_WS_URL:-ws://localhost:8000}
+        NEXT_PUBLIC_VLM_WS_ENDPOINT: ${VLM_WS_ENDPOINT:-/v1/vlm/ws/transcribe-vision-tts}
+        NEXT_PUBLIC_HEALTHCHECK_ENDPOINT: ${HEALTHCHECK_ENDPOINT:-/health}
+        NEXT_PUBLIC_AUTH_ENDPOINT: ${AUTH_ENDPOINT:-/v1/auth/token}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    
 
 volumes:
   local_pgdata:
