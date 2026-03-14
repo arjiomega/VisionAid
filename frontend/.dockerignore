@@ -1,0 +1,13 @@
+# Basic ignores
+node_modules
+.next
+Dockerfile
+.dockerignore
+
+# Ignore any env local override files
+.env.local
+.env.development.local
+.env.production.local
+
+# Optional: ignore all env files except the ones you explicitly want
+*.env
