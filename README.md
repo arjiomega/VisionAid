@@ -80,4 +80,7 @@ docker compose --profile backend up --build -d
 3. Clean up
 ```bash
 docker compose down
+
+# OR if frontend excluded
+docker compose --profile backend down
 ```
