@@ -13,16 +13,22 @@ services:
     volumes:
       - local_pgdata:/var/lib/postgresql/data
       - ./db:/docker-entrypoint-initdb.d
+    profiles:
+      - backend
 
   tts-grpc:
     build:
       context: ./services/tts
       dockerfile: Dockerfile
+    profiles:
+      - backend
 
   stt-grpc:
     build:
       context: ./services/stt
       dockerfile: Dockerfile
+    profiles:
+      - backend
 
   backend:
     build:
@@ -45,6 +51,8 @@ services:
       - tts-grpc
       - stt-grpc
       - db
+    profiles:
+      - backend
 
   frontend:
     build:
@@ -60,6 +68,8 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+    profiles:
+      - frontend
     
 
 volumes:
