@@ -72,6 +72,9 @@ NEXT_PUBLIC_AUTH_ENDPOINT=/v1/auth/token
 2. Run
 ```bash
 docker compose up --build -d
+
+# OR exclude frontend
+docker compose --profile backend up --build -d
 ```
 
 3. Clean up
