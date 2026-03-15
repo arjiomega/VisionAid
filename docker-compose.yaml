@@ -45,6 +45,7 @@ services:
       DATABASE_URL: "${DATABASE_URL:-postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}}"
       SECRET_KEY: ${SECRET_KEY:?Environment variable SECRET_KEY is required}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
+      CORS_ORIGINS: ${$CORS_ORIGINS:-*}
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     depends_on:

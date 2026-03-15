@@ -26,6 +26,8 @@ Assist vision impaired individuals with AI
 | `STT_GRPC_PORT`         | `50051`           | gRPC STT service port      |
 | `BACKEND_PORT`          | `8000`            | Exposed backend HTTP port  |
 | Various `NEXT_PUBLIC_*` | Frontend defaults | Used by the frontend build |
+| `CORS_ORIGINS` | `*` | Comma-separated list of allowed frontend origins |
+
 
 1. Create .env file with the following variables
 ```env
@@ -57,6 +59,10 @@ STT_GRPC_PORT=50051
 
 # Optional: Backend exposed port
 BACKEND_PORT=8000
+
+# Optional: Allowed origins for CORS (comma-separated)
+# Example: http://localhost:3000,http://192.168.1.5:3000
+CORS_ORIGINS=http://localhost:3000
 
 ###########################################################
 # Frontend (Next.js)
